@@ -15,13 +15,13 @@ class ApiClient {
   private async request(endpoint: string, options: RequestInit = {}) {
     const url = `${this.baseURL}${endpoint}`;
     
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string>),
     };
 
     if (this.token) {
-      headers.Authorization = `Bearer ${this.token}`;
+      headers['Authorization'] = `Bearer ${this.token}`;
     }
 
     const response = await fetch(url, {
@@ -86,8 +86,8 @@ class ApiClient {
     if (description) formData.append('description', description);
 
     const url = `${this.baseURL}/meals/analyze`;
-    const headers: HeadersInit = {};
-    if (this.token) headers.Authorization = `Bearer ${this.token}`;
+    const headers: Record<string, string> = {};
+    if (this.token) headers['Authorization'] = `Bearer ${this.token}`;
 
     const response = await fetch(url, {
       method: 'POST',
