@@ -4,6 +4,8 @@
 
 A modern, mobile-first web application for tracking calories and macronutrients with AI-powered food recognition and personalized nutrition goals.
 
+🌐 **Live Demo:** [https://dogam.fit](https://dogam.fit)
+
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black.svg)
