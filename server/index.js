@@ -23,13 +23,16 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
-    // Allow localhost and network IPs on port 3000
+    // Allow localhost, network IPs, and production domains
     const allowedOrigins = [
       'http://localhost:3000',
       'http://127.0.0.1:3000',
+      'https://dogam.fit',
+      'https://www.dogam.fit',
       /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}:3000$/,
       /^http:\/\/10\.\d{1,3}\.\d{1,3}\.\d{1,3}:3000$/,
-      /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}:3000$/
+      /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}:3000$/,
+      /^https:\/\/.*\.vercel\.app$/
     ];
     
     const isAllowed = allowedOrigins.some(allowed => {
