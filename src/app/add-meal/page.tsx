@@ -328,7 +328,7 @@ Tip: Be specific about portions and cooking methods for better accuracy!"
                     </div>
                     <input
                       type="number"
-                      className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg font-semibold"
+                      className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg font-semibold text-gray-900"
                       value={confirmedValues.calories}
                       onChange={(e) => setConfirmedValues({...confirmedValues, calories: e.target.value})}
                     />
@@ -345,7 +345,7 @@ Tip: Be specific about portions and cooking methods for better accuracy!"
                     <input
                       type="number"
                       step="0.1"
-                      className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-semibold"
+                      className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-semibold text-gray-900"
                       value={confirmedValues.protein}
                       onChange={(e) => setConfirmedValues({...confirmedValues, protein: e.target.value})}
                     />
@@ -362,7 +362,7 @@ Tip: Be specific about portions and cooking methods for better accuracy!"
                     <input
                       type="number"
                       step="0.1"
-                      className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-lg font-semibold"
+                      className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-lg font-semibold text-gray-900"
                       value={confirmedValues.carbs}
                       onChange={(e) => setConfirmedValues({...confirmedValues, carbs: e.target.value})}
                     />
@@ -379,7 +379,7 @@ Tip: Be specific about portions and cooking methods for better accuracy!"
                     <input
                       type="number"
                       step="0.1"
-                      className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg font-semibold"
+                      className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg font-semibold text-gray-900"
                       value={confirmedValues.fat}
                       onChange={(e) => setConfirmedValues({...confirmedValues, fat: e.target.value})}
                     />

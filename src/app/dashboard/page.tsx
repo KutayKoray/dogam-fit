@@ -431,8 +431,10 @@ function DashboardPage() {
           </div>
 
           {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden border-t border-gray-200 py-4 space-y-2">
+          <div className={`md:hidden border-t border-gray-200 overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}>
+            <div className="py-4 space-y-2">
               <Link
                 href="/profile"
                 onClick={() => setMobileMenuOpen(false)}
@@ -460,7 +462,7 @@ function DashboardPage() {
                 Logout
               </button>
             </div>
-          )}
+          </div>
         </div>
       </header>
 
@@ -694,8 +696,9 @@ function DashboardPage() {
                     </button>
 
                     {/* Expanded Meals List */}
-                    {isExpanded && (
-                      <div className="bg-gray-50">
+                    <div className={`bg-gray-50 overflow-hidden transition-all duration-300 ease-in-out ${
+                      isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}>
                         {/* Quick Add Button */}
                         <div className="px-6 py-3 border-b border-gray-200">
                           <button
@@ -842,8 +845,7 @@ function DashboardPage() {
                           </div>
                         ))}
                         </div>
-                      </div>
-                    )}
+                    </div>
                   </div>
                 );
               })}
