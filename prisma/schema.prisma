@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  
+  // Profile information
+  age       Int?
+  height    Float?    // in cm
+  weight    Float?    // in kg
+  gender    String?   // male, female, other
+  targetWeight Float? // in kg
+  activityLevel String? // sedentary, light, moderate, active, very_active
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  meals     Meal[]
+  goals     Goal[]
+  
+  @@map("users")
+}
+
+model Meal {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  
+  // AI-generated estimates (editable)
+  aiCalories          Int?
+  aiProtein          Float?
+  aiCarbohydrates    Float?
+  aiFat              Float?
+  aiConfidence       Float?
+  aiNotes            String?
+  
+  // User-confirmed values
+  confirmedCalories     Int?
+  confirmedProtein     Float?
+  confirmedCarbohydrates Float?
+  confirmedFat         Float?
+  
+  // Meal metadata
+  mealType    String // breakfast, lunch, dinner, snack
+  imageUrl    String?
+  loggedAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("meals")
+}
+
+model Goal {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  targetCalories   Int
+  targetProtein    Float
+  targetCarbohydrates Float
+  targetFat        Float
+  isActive         Boolean @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("goals")
+}
