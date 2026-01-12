@@ -26,13 +26,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    if (savedToken) {
-      setToken(savedToken);
-      apiClient.setToken(savedToken);
-      // TODO: Validate token with server
+    try {
+      const savedToken = localStorage.getItem('token');
+      if (savedToken) {
+        setToken(savedToken);
+        apiClient.setToken(savedToken);
+        // TODO: Validate token with server
+      }
+    } catch (error) {
+      console.error('Failed to access localStorage:', error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -40,7 +45,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await apiClient.login(email, password);
       setUser(response.user);
       setToken(response.token);
-      localStorage.setItem('token', response.token);
+      try {
+        localStorage.setItem('token', response.token);
+      } catch (storageError) {
+        console.error('Failed to save token to localStorage:', storageError);
+      }
     } catch (error) {
       throw error;
     }
@@ -51,7 +60,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await apiClient.register(email, password, name);
       setUser(response.user);
       setToken(response.token);
-      localStorage.setItem('token', response.token);
+      try {
+        localStorage.setItem('token', response.token);
+      } catch (storageError) {
+        console.error('Failed to save token to localStorage:', storageError);
+      }
     } catch (error) {
       throw error;
     }
@@ -60,7 +73,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('token');
+    try {
+      localStorage.removeItem('token');
+    } catch (error) {
+      console.error('Failed to remove token from localStorage:', error);
+    }
     apiClient.setToken('');
   };
 

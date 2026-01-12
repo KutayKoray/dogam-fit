@@ -11,7 +11,10 @@ export default function Logo({ className = "w-6 h-6", size = 24 }: LogoProps) {
       viewBox="0 0 64 64" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
       className={className}
+      role="img"
+      aria-label="DogamFit Logo"
     >
       {/* Apple/nutrition icon */}
       <path 
@@ -26,9 +29,9 @@ export default function Logo({ className = "w-6 h-6", size = 24 }: LogoProps) {
       />
       
       {/* Sparkle effect */}
-      <circle cx="26" cy="26" r="2" fill="currentColor" opacity="0.6"/>
-      <circle cx="38" cy="26" r="2" fill="currentColor" opacity="0.6"/>
-      <circle cx="32" cy="34" r="2" fill="currentColor" opacity="0.8"/>
+      <circle cx="26" cy="26" r="2" fill="currentColor" fillOpacity="0.6"/>
+      <circle cx="38" cy="26" r="2" fill="currentColor" fillOpacity="0.6"/>
+      <circle cx="32" cy="34" r="2" fill="currentColor" fillOpacity="0.8"/>
     </svg>
   );
 }
