@@ -6,7 +6,7 @@ import { apiClient } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { format } from 'date-fns';
-import { Plus, Flame, Beef, Wheat, Droplet, TrendingUp, Clock, Sparkles, LogOut, ChevronDown, ChevronUp, Edit2, Trash2, Save, X, Loader2, User, Menu } from 'lucide-react';
+import { Plus, Flame, Beef, Wheat, Droplet, TrendingUp, Clock, Sparkles, LogOut, ChevronDown, ChevronUp, Edit2, Trash2, Save, X, Loader2, User, Menu, Users } from 'lucide-react';
 
 function DashboardPage() {
   const [meals, setMeals] = useState<any[]>([]);
@@ -406,6 +406,13 @@ function DashboardPage() {
                 Profile
               </Link>
               <Link
+                href="/friends"
+                className="inline-flex items-center px-4 py-2 text-gray-700 bg-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 border border-gray-200 font-medium"
+              >
+                <Users className="w-4 h-4 mr-2" />
+                Friends
+              </Link>
+              <Link
                 href="/add-meal"
                 className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-medium"
               >
@@ -442,6 +449,14 @@ function DashboardPage() {
               >
                 <User className="w-5 h-5 mr-3" />
                 Profile
+              </Link>
+              <Link
+                href="/friends"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center px-4 py-3 text-gray-700 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors font-medium"
+              >
+                <Users className="w-5 h-5 mr-3" />
+                Friends
               </Link>
               <Link
                 href="/add-meal"

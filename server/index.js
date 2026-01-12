@@ -10,6 +10,7 @@ import mealRoutes from './routes/meals.js';
 import goalRoutes from './routes/goals.js';
 import aiRoutes from './routes/ai.js';
 import profileRoutes from './routes/profile.js';
+import connectionsRoutes from './routes/connections.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -70,6 +71,7 @@ app.use('/api/meals', mealRoutes);
 app.use('/api/goals', goalRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/connections', connectionsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

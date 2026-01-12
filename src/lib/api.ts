@@ -140,6 +140,51 @@ class ApiClient {
       body: JSON.stringify(profileData),
     });
   }
+
+  // Connection endpoints (Family Sharing)
+  async getConnections() {
+    return this.request('/connections');
+  }
+
+  async getPendingRequests() {
+    return this.request('/connections/pending');
+  }
+
+  async sendConnectionRequest(email: string) {
+    return this.request('/connections/request', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  }
+
+  async acceptConnection(connectionId: string) {
+    return this.request(`/connections/accept/${connectionId}`, {
+      method: 'POST',
+    });
+  }
+
+  async rejectConnection(connectionId: string) {
+    return this.request(`/connections/reject/${connectionId}`, {
+      method: 'POST',
+    });
+  }
+
+  async removeConnection(connectionId: string) {
+    return this.request(`/connections/${connectionId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getFriendMeals(friendId: string) {
+    return this.request(`/connections/${friendId}/meals`);
+  }
+
+  async toggleSharing(enabled: boolean) {
+    return this.request('/connections/sharing', {
+      method: 'PATCH',
+      body: JSON.stringify({ enabled }),
+    });
+  }
 }
 
 export const apiClient = new ApiClient();
