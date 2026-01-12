@@ -23,16 +23,14 @@ router.get('/', authenticateToken, async (req, res) => {
           select: {
             id: true,
             email: true,
-            name: true,
-            sharingEnabled: true
+            name: true
           }
         },
         receiver: {
           select: {
             id: true,
             email: true,
-            name: true,
-            sharingEnabled: true
+            name: true
           }
         }
       }
@@ -46,7 +44,6 @@ router.get('/', authenticateToken, async (req, res) => {
         friendId: friend.id,
         email: friend.email,
         name: friend.name,
-        sharingEnabled: friend.sharingEnabled,
         connectedAt: conn.createdAt
       };
     });

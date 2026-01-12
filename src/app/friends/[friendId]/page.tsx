@@ -28,16 +28,23 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
   const fetchFriendData = async () => {
     try {
       setIsLoading(true);
-      const token = localStorage.getItem('token');
+      
+      // Use safeStorage for iOS compatibility
+      const { safeStorage } = await import('@/lib/storage');
+      const token = safeStorage.getItem('token');
       if (token) {
         apiClient.setToken(token);
       }
 
       // Get friend info from connections list
       const connections = await apiClient.getConnections();
+      console.log('Connections:', connections);
+      console.log('Looking for friendId:', params.friendId);
+      
       const friendData = connections.find((c: any) => c.friendId === params.friendId);
       
       if (!friendData) {
+        console.error('Friend not found in connections list');
         setError('Friend not found');
         setIsLoading(false);
         return;
