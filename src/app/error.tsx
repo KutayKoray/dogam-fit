@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { AlertCircle, Home, RefreshCw } from 'lucide-react';
+import { logError } from '@/lib/errorLogger';
 
 export default function Error({
   error,
@@ -12,8 +13,11 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log error to console for debugging
-    console.error('Application error:', error);
+    // Log error with context
+    logError(error, {
+      digest: error.digest,
+      component: 'ErrorBoundary',
+    });
   }, [error]);
 
   return (
