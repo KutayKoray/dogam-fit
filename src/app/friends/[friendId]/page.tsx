@@ -9,9 +9,9 @@ import Logo from '@/components/Logo';
 import { format, parseISO, startOfDay, subDays } from 'date-fns';
 
 interface FriendProgressPageProps {
-  params: {
+  params: Promise<{
     friendId: string;
-  };
+  }>;
 }
 
 function FriendProgressPage({ params }: FriendProgressPageProps) {
@@ -20,10 +20,20 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [dateRange, setDateRange] = useState(7); // Last 7 days
+  const [friendId, setFriendId] = useState<string>('');
 
   useEffect(() => {
-    fetchFriendData();
-  }, [params.friendId, dateRange]);
+    // Unwrap params promise
+    params.then((p) => {
+      setFriendId(p.friendId);
+    });
+  }, [params]);
+
+  useEffect(() => {
+    if (friendId) {
+      fetchFriendData();
+    }
+  }, [friendId, dateRange]);
 
   const fetchFriendData = async () => {
     try {
@@ -37,12 +47,12 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
         apiClient.setToken(token);
       }
 
-      console.log('Fetching friend data for ID:', params.friendId);
+      console.log('Fetching friend data for ID:', friendId);
 
       // Try to get friend's meals directly first
       let mealsData;
       try {
-        mealsData = await apiClient.getFriendMeals(params.friendId);
+        mealsData = await apiClient.getFriendMeals(friendId);
         console.log('Friend meals fetched successfully:', mealsData.length, 'meals');
       } catch (mealsError: any) {
         console.error('Failed to fetch friend meals:', mealsError);
@@ -59,14 +69,14 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
         console.log('Connections fetched:', connections);
         
         // Try to find by friendId
-        friendData = connections.find((c: any) => c.friendId === params.friendId);
+        friendData = connections.find((c: any) => c.friendId === friendId);
         
         if (!friendData) {
           console.warn('Friend not found by friendId, creating fallback data');
           // Create a fallback friend object if not found in connections
           // This can happen if the connection was just accepted
           friendData = {
-            friendId: params.friendId,
+            friendId: friendId,
             name: 'Friend',
             email: 'Loading...',
           };
@@ -75,7 +85,7 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
         console.error('Failed to fetch connections:', connectionsError);
         // Use fallback data
         friendData = {
-          friendId: params.friendId,
+          friendId: friendId,
           name: 'Friend',
           email: 'Loading...',
         };
