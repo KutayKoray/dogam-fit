@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Camera, Upload, X, Sparkles, ArrowLeft, Flame, Beef, Wheat, Droplet, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 function AddMealPage() {
   const [description, setDescription] = useState('');
@@ -130,7 +131,7 @@ function AddMealPage() {
             </div>
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
+                <Logo className="w-6 h-6 text-white" size={24} />
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Add New Meal</h1>

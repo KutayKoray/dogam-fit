@@ -6,6 +6,7 @@ import { apiClient } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { ArrowLeft, Users, UserPlus, Check, X, Trash2, Eye, EyeOff, Loader2, Mail, Calendar } from 'lucide-react';
+import Logo from '@/components/Logo';
 import { format } from 'date-fns';
 
 function FriendsPage() {
@@ -130,7 +131,7 @@ function FriendsPage() {
             </div>
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <Users className="w-6 h-6 text-white" />
+                <Logo className="w-6 h-6 text-white" size={24} />
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Friends</h1>

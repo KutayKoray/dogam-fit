@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Sparkles, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ export default function LoginPage() {
         <div className="relative z-10 text-white space-y-6 max-w-md">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-              <Sparkles className="w-7 h-7" />
+              <Logo className="w-7 h-7 text-white" size={28} />
             </div>
             <span className="text-3xl font-bold">DogamFit</span>
           </div>

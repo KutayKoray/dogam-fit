@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Camera, TrendingUp, Sparkles, ArrowRight, CheckCircle } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 export default function HomePage() {
   return (
@@ -9,7 +10,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+              <Logo className="w-5 h-5 text-white" size={20} />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               DogamFit

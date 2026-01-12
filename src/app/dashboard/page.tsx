@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { Plus, Flame, Beef, Wheat, Droplet, TrendingUp, Clock, Sparkles, LogOut, ChevronDown, ChevronUp, Edit2, Trash2, Save, X, Loader2, User, Menu, Users } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 export const metadata = {
   title: 'Dashboard - DogamFit',
@@ -393,7 +394,7 @@ function DashboardPage() {
             {/* Logo and Title */}
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
+                <Logo className="w-6 h-6 text-white" size={24} />
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">DogamFit</h1>
