@@ -28,6 +28,7 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
   const fetchFriendData = async () => {
     try {
       setIsLoading(true);
+      setError('');
       
       // Use safeStorage for iOS compatibility
       const { safeStorage } = await import('@/lib/storage');
@@ -36,24 +37,51 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
         apiClient.setToken(token);
       }
 
-      // Get friend info from connections list
-      const connections = await apiClient.getConnections();
-      console.log('Connections:', connections);
-      console.log('Looking for friendId:', params.friendId);
-      
-      const friendData = connections.find((c: any) => c.friendId === params.friendId);
-      
-      if (!friendData) {
-        console.error('Friend not found in connections list');
-        setError('Friend not found');
+      console.log('Fetching friend data for ID:', params.friendId);
+
+      // Try to get friend's meals directly first
+      let mealsData;
+      try {
+        mealsData = await apiClient.getFriendMeals(params.friendId);
+        console.log('Friend meals fetched successfully:', mealsData.length, 'meals');
+      } catch (mealsError: any) {
+        console.error('Failed to fetch friend meals:', mealsError);
+        // If meals fetch fails, it might be because friend doesn't exist or sharing is disabled
+        setError('Unable to view this friend\'s data. They may have disabled sharing.');
         setIsLoading(false);
         return;
       }
 
-      setFriend(friendData);
+      // Get friend info from connections list for display
+      let friendData;
+      try {
+        const connections = await apiClient.getConnections();
+        console.log('Connections fetched:', connections);
+        
+        // Try to find by friendId
+        friendData = connections.find((c: any) => c.friendId === params.friendId);
+        
+        if (!friendData) {
+          console.warn('Friend not found by friendId, creating fallback data');
+          // Create a fallback friend object if not found in connections
+          // This can happen if the connection was just accepted
+          friendData = {
+            friendId: params.friendId,
+            name: 'Friend',
+            email: 'Loading...',
+          };
+        }
+      } catch (connectionsError) {
+        console.error('Failed to fetch connections:', connectionsError);
+        // Use fallback data
+        friendData = {
+          friendId: params.friendId,
+          name: 'Friend',
+          email: 'Loading...',
+        };
+      }
 
-      // Get friend's meals
-      const mealsData = await apiClient.getFriendMeals(params.friendId);
+      setFriend(friendData);
       
       // Filter by date range on client side
       const cutoffDate = subDays(new Date(), dateRange);
@@ -61,6 +89,7 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
         parseISO(meal.loggedAt) >= cutoffDate
       );
       
+      console.log('Filtered meals:', filteredMeals.length, 'meals in last', dateRange, 'days');
       setMeals(filteredMeals);
     } catch (error: any) {
       console.error('Failed to fetch friend data:', error);

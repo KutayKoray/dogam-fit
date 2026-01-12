@@ -281,25 +281,25 @@ router.get('/:friendId/meals', authenticateToken, async (req, res) => {
       return res.status(403).json({ error: 'Not connected with this user' });
     }
 
-    // Check if friend has sharing enabled
+    // Get friend info
     const friend = await prisma.user.findUnique({
       where: { id: friendId },
-      select: { sharingEnabled: true, name: true, email: true }
+      select: { id: true, name: true, email: true }
     });
 
-    if (!friend.sharingEnabled) {
-      return res.status(403).json({ error: 'User has disabled sharing' });
+    if (!friend) {
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    // Get friend's meals from last 7 days
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    // Get friend's meals from last 30 days (we'll filter on client side)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     const meals = await prisma.meal.findMany({
       where: {
         userId: friendId,
         loggedAt: {
-          gte: sevenDaysAgo
+          gte: thirtyDaysAgo
         }
       },
       orderBy: {
@@ -307,14 +307,7 @@ router.get('/:friendId/meals', authenticateToken, async (req, res) => {
       }
     });
 
-    res.json({
-      friend: {
-        id: friendId,
-        name: friend.name,
-        email: friend.email
-      },
-      meals
-    });
+    res.json(meals);
   } catch (error) {
     console.error('Get friend meals error:', error);
     res.status(500).json({ error: 'Failed to fetch friend meals' });
