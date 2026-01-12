@@ -519,13 +519,23 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
                         </div>
 
                         {/* X Axis Labels */}
-                        <div className="flex justify-between mt-2 text-[10px] sm:text-xs text-gray-600 font-medium pl-8 sm:pl-10">
-                          {data.filter((_, i) => {
-                            if (analyticsRange === 'week') return true;
-                            return i % 5 === 0 || i === data.length - 1;
-                          }).map((item, i) => (
-                            <span key={i}>{item.date}</span>
-                          ))}
+                        <div className="relative mt-2 text-[10px] sm:text-xs text-gray-600 font-medium pl-8 sm:pl-10" style={{ height: '20px' }}>
+                          {data.map((item, index) => {
+                            // Show all labels for weekly, every 5th for monthly
+                            const shouldShow = analyticsRange === 'week' || index % 5 === 0 || index === data.length - 1;
+                            if (!shouldShow) return null;
+                            
+                            const x = data.length === 1 ? 50 : (index / (data.length - 1)) * 95;
+                            return (
+                              <span 
+                                key={index}
+                                className="absolute transform -translate-x-1/2"
+                                style={{ left: `${x}%` }}
+                              >
+                                {item.date}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
                     </>
