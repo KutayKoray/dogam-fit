@@ -144,25 +144,25 @@ function FriendsPage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {/* Sharing Toggle */}
-          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-gray-200">
+          {/* Data Sharing Toggle */}
+          <div className="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl shadow-xl border border-gray-200">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 min-w-0 flex-1">
                 {sharingEnabled ? (
-                  <Eye className="w-5 h-5 text-green-600" />
+                  <Eye className="w-5 h-5 text-green-600 flex-shrink-0" />
                 ) : (
-                  <EyeOff className="w-5 h-5 text-gray-400" />
+                  <EyeOff className="w-5 h-5 text-gray-400 flex-shrink-0" />
                 )}
-                <div>
-                  <h3 className="font-bold text-gray-900">Data Sharing</h3>
-                  <p className="text-sm text-gray-500">
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-bold text-gray-900 text-sm sm:text-base">Data Sharing</h3>
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">
                     {sharingEnabled ? 'Friends can see your meals' : 'Your data is private'}
                   </p>
                 </div>
               </div>
               <button
                 onClick={toggleSharing}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ml-3 ${
                   sharingEnabled ? 'bg-green-600' : 'bg-gray-300'
                 }`}
               >
@@ -176,23 +176,23 @@ function FriendsPage() {
           </div>
 
           {/* Add Friend */}
-          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-gray-200">
-            <div className="flex items-center space-x-3 mb-4">
+          <div className="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl shadow-xl border border-gray-200">
+            <div className="flex items-center space-x-3 mb-3 sm:mb-4">
               <UserPlus className="w-5 h-5 text-indigo-600" />
-              <h2 className="text-lg font-bold text-gray-900">Add Friend</h2>
+              <h2 className="text-base sm:text-lg font-bold text-gray-900">Add Friend</h2>
             </div>
-            <div className="flex space-x-3">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
               <input
                 type="email"
                 placeholder="Enter friend's email"
                 value={newFriendEmail}
                 onChange={(e) => setNewFriendEmail(e.target.value)}
-                className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900"
+                className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 text-sm sm:text-base"
               />
               <button
                 onClick={sendRequest}
                 disabled={isSending}
-                className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none font-semibold"
+                className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none font-semibold text-sm sm:text-base"
               >
                 {isSending ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Send'}
               </button>
@@ -213,32 +213,36 @@ function FriendsPage() {
 
           {/* Pending Requests */}
           {pendingRequests.length > 0 && (
-            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-gray-200">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Pending Requests</h2>
-              <div className="space-y-3">
+            <div className="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl shadow-xl border border-gray-200">
+              <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4">Pending Requests ({pendingRequests.length})</h2>
+              <div className="space-y-2 sm:space-y-3">
                 {pendingRequests.map((request) => (
-                  <div key={request.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                        <Mail className="w-5 h-5 text-white" />
+                  <div key={request.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+                    <div className="flex items-center space-x-3 mb-3 sm:mb-0">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-lg sm:text-xl font-bold text-white">
+                          {request.from.name?.charAt(0).toUpperCase() || request.from.email.charAt(0).toUpperCase()}
+                        </span>
                       </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">{request.from.name || request.from.email}</p>
-                        <p className="text-sm text-gray-500">{request.from.email}</p>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{request.from.name || request.from.email}</p>
+                        <p className="text-xs sm:text-sm text-gray-500 truncate">{request.from.email}</p>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 w-full sm:w-auto">
                       <button
                         onClick={() => acceptRequest(request.id)}
-                        className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                        className="flex-1 sm:flex-none px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium text-sm flex items-center justify-center space-x-2"
                       >
-                        <Check className="w-5 h-5" />
+                        <Check className="w-4 h-4" />
+                        <span>Accept</span>
                       </button>
                       <button
                         onClick={() => rejectRequest(request.id)}
-                        className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        className="flex-1 sm:flex-none px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium text-sm flex items-center justify-center space-x-2"
                       >
-                        <X className="w-5 h-5" />
+                        <X className="w-4 h-4" />
+                        <span>Reject</span>
                       </button>
                     </div>
                   </div>
@@ -248,47 +252,47 @@ function FriendsPage() {
           )}
 
           {/* Friends List */}
-          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-gray-200">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">
+          <div className="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-2xl shadow-xl border border-gray-200">
+            <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4">
               My Friends ({friends.length})
             </h2>
             {friends.length === 0 ? (
-              <div className="text-center py-12">
-                <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">No friends yet. Add someone to get started!</p>
+              <div className="text-center py-8 sm:py-12">
+                <Users className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-3 sm:mb-4" />
+                <p className="text-sm sm:text-base text-gray-500">No friends yet. Add someone to get started!</p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {friends.map((friend) => (
-                  <div key={friend.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
-                        <Users className="w-5 h-5 text-white" />
+                  <div key={friend.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center space-x-3 mb-3 sm:mb-0 min-w-0 flex-1">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-lg sm:text-xl font-bold text-white">
+                          {friend.name?.charAt(0).toUpperCase() || friend.email.charAt(0).toUpperCase()}
+                        </span>
                       </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">{friend.name || friend.email}</p>
-                        <div className="flex items-center space-x-2 text-sm text-gray-500">
-                          <span>{friend.email}</span>
-                          {!friend.sharingEnabled && (
-                            <span className="text-xs bg-gray-200 px-2 py-0.5 rounded">Private</span>
-                          )}
-                        </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{friend.name || friend.email}</p>
+                        <p className="text-xs sm:text-sm text-gray-500 truncate">{friend.email}</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Connected {new Date(friend.connectedAt).toLocaleDateString()}
+                        </p>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
-                      {friend.sharingEnabled && (
-                        <Link
-                          href={`/friends/${friend.friendId}`}
-                          className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors font-medium"
-                        >
-                          View Progress
-                        </Link>
-                      )}
+                    <div className="flex space-x-2 w-full sm:w-auto">
+                      <Link
+                        href={`/friends/${friend.friendId}`}
+                        className="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all font-medium text-sm flex items-center justify-center space-x-2 shadow-md hover:shadow-lg"
+                      >
+                        <Eye className="w-4 h-4" />
+                        <span>View Progress</span>
+                      </Link>
                       <button
                         onClick={() => removeFriend(friend.id)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Remove friend"
                       >
-                        <Trash2 className="w-5 h-5" />
+                        <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                       </button>
                     </div>
                   </div>
