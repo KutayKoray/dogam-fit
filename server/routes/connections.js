@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 // Get all connections (friends) for current user
 router.get('/', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
 
     // Get connections where user is either initiator or receiver and status is accepted
     const connections = await prisma.userConnection.findMany({
@@ -61,7 +61,7 @@ router.get('/', authenticateToken, async (req, res) => {
 // Get pending connection requests
 router.get('/pending', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
 
     const pendingRequests = await prisma.userConnection.findMany({
       where: {
@@ -93,7 +93,7 @@ router.get('/pending', authenticateToken, async (req, res) => {
 // Send connection request
 router.post('/request', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const { email } = req.body;
 
     if (!email) {
@@ -162,7 +162,7 @@ router.post('/request', authenticateToken, async (req, res) => {
 // Accept connection request
 router.post('/accept/:connectionId', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const { connectionId } = req.params;
 
     const connection = await prisma.userConnection.findUnique({
@@ -208,7 +208,7 @@ router.post('/accept/:connectionId', authenticateToken, async (req, res) => {
 // Reject connection request
 router.post('/reject/:connectionId', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const { connectionId } = req.params;
 
     const connection = await prisma.userConnection.findUnique({
@@ -237,7 +237,7 @@ router.post('/reject/:connectionId', authenticateToken, async (req, res) => {
 // Remove connection (unfriend)
 router.delete('/:connectionId', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const { connectionId } = req.params;
 
     const connection = await prisma.userConnection.findUnique({
@@ -267,7 +267,7 @@ router.delete('/:connectionId', authenticateToken, async (req, res) => {
 // Get friend's meals (shared data)
 router.get('/:friendId/meals', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const { friendId } = req.params;
 
     // Verify connection exists and is accepted
@@ -327,7 +327,7 @@ router.get('/:friendId/meals', authenticateToken, async (req, res) => {
 // Toggle sharing setting
 router.patch('/sharing', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const { enabled } = req.body;
 
     const user = await prisma.user.update({
