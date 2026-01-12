@@ -827,15 +827,15 @@ function DashboardPage() {
                                     <div className="flex items-center space-x-3 text-xs text-gray-600">
                                       <span className="flex items-center">
                                         <Beef className="w-3 h-3 mr-1 text-blue-500" />
-                                        {(meal.confirmedProtein || meal.aiProtein).toFixed(1)}g
+                                        {((meal.confirmedProtein || meal.aiProtein) || 0).toFixed(1)}g
                                       </span>
                                       <span className="flex items-center">
                                         <Wheat className="w-3 h-3 mr-1 text-green-500" />
-                                        {(meal.confirmedCarbohydrates || meal.aiCarbohydrates).toFixed(1)}g
+                                        {((meal.confirmedCarbohydrates || meal.aiCarbohydrates) || 0).toFixed(1)}g
                                       </span>
                                       <span className="flex items-center">
                                         <Droplet className="w-3 h-3 mr-1 text-amber-500" />
-                                        {(meal.confirmedFat || meal.aiFat).toFixed(1)}g
+                                        {((meal.confirmedFat || meal.aiFat) || 0).toFixed(1)}g
                                       </span>
                                     </div>
                                   </div>
