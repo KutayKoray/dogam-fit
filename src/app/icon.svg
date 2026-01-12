@@ -1,0 +1,23 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Circle background -->
+  <circle cx="32" cy="32" r="30" fill="url(#grad1)"/>
+  
+  <!-- Apple/nutrition icon - larger and centered -->
+  <path d="M32 16C32 16 28 12 24 12C20 12 16 16 16 22C16 28 20 36 24 40C26 42 28 44 32 44C36 44 38 42 40 40C44 36 48 28 48 22C48 16 44 12 40 12C36 12 32 16 32 16Z" fill="white"/>
+  
+  <!-- Leaf on top -->
+  <path d="M32 12C32 12 34 10 36 10C38 10 40 12 40 14C40 16 38 18 36 18C34 18 32 16 32 12Z" fill="#86EFAC"/>
+  
+  <!-- Sparkle effect -->
+  <circle cx="26" cy="26" r="2" fill="#4F46E5"/>
+  <circle cx="38" cy="26" r="2" fill="#4F46E5"/>
+  <circle cx="32" cy="34" r="2" fill="#7C3AED"/>
+</svg>

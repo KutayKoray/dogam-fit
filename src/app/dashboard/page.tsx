@@ -8,6 +8,11 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { Plus, Flame, Beef, Wheat, Droplet, TrendingUp, Clock, Sparkles, LogOut, ChevronDown, ChevronUp, Edit2, Trash2, Save, X, Loader2, User, Menu, Users } from 'lucide-react';
 
+export const metadata = {
+  title: 'Dashboard - DogamFit',
+  description: 'Track your daily nutrition and fitness goals',
+};
+
 function DashboardPage() {
   const [meals, setMeals] = useState<any[]>([]);
   const [goals, setGoals] = useState<any[]>([]);
@@ -391,7 +396,7 @@ function DashboardPage() {
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">NutriTrack</h1>
+                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">DogamFit</h1>
                 <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">Welcome, {user?.name || user?.email}</p>
               </div>
             </div>
