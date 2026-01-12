@@ -21,6 +21,10 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
   const [error, setError] = useState('');
   const [dateRange, setDateRange] = useState(7); // Last 7 days
   const [friendId, setFriendId] = useState<string>('');
+  const [showChart, setShowChart] = useState(false);
+  const [analyticsMetric, setAnalyticsMetric] = useState<'calories' | 'protein' | 'carbs' | 'fat'>('calories');
+  const [analyticsRange, setAnalyticsRange] = useState<'week' | 'month'>('week');
+  const [hoveredPoint, setHoveredPoint] = useState<any>(null);
 
   useEffect(() => {
     // Unwrap params promise
@@ -224,35 +228,309 @@ function FriendProgressPage({ params }: FriendProgressPageProps) {
             <div className="flex items-center space-x-2 mb-4">
               <TrendingUp className="w-5 h-5 text-indigo-600" />
               <h3 className="text-lg font-bold text-gray-900">Daily Averages</h3>
+              <span className="text-xs text-gray-500">(Click to view chart)</span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-orange-50 rounded-lg p-4">
+              <button
+                onClick={() => {
+                  setAnalyticsMetric('calories');
+                  setShowChart(true);
+                }}
+                className="bg-orange-50 rounded-lg p-4 hover:bg-orange-100 transition-colors cursor-pointer text-left"
+              >
                 <div className="flex items-center space-x-2 mb-2">
                   <Flame className="w-4 h-4 text-orange-500" />
                   <span className="text-xs text-gray-600">Calories</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900">{averages.calories}</p>
-              </div>
-              <div className="bg-blue-50 rounded-lg p-4">
+              </button>
+              <button
+                onClick={() => {
+                  setAnalyticsMetric('protein');
+                  setShowChart(true);
+                }}
+                className="bg-blue-50 rounded-lg p-4 hover:bg-blue-100 transition-colors cursor-pointer text-left"
+              >
                 <div className="flex items-center space-x-2 mb-2">
                   <Beef className="w-4 h-4 text-blue-500" />
                   <span className="text-xs text-gray-600">Protein</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900">{averages.protein}g</p>
-              </div>
-              <div className="bg-green-50 rounded-lg p-4">
+              </button>
+              <button
+                onClick={() => {
+                  setAnalyticsMetric('carbs');
+                  setShowChart(true);
+                }}
+                className="bg-green-50 rounded-lg p-4 hover:bg-green-100 transition-colors cursor-pointer text-left"
+              >
                 <div className="flex items-center space-x-2 mb-2">
                   <Wheat className="w-4 h-4 text-green-500" />
                   <span className="text-xs text-gray-600">Carbs</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900">{averages.carbs}g</p>
-              </div>
-              <div className="bg-amber-50 rounded-lg p-4">
+              </button>
+              <button
+                onClick={() => {
+                  setAnalyticsMetric('fat');
+                  setShowChart(true);
+                }}
+                className="bg-amber-50 rounded-lg p-4 hover:bg-amber-100 transition-colors cursor-pointer text-left"
+              >
                 <div className="flex items-center space-x-2 mb-2">
                   <Droplet className="w-4 h-4 text-amber-500" />
                   <span className="text-xs text-gray-600">Fat</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900">{averages.fat}g</p>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Chart Modal */}
+        {showChart && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowChart(false)}>
+            <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-4 sm:p-6 rounded-t-2xl">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 capitalize">
+                    {analyticsMetric} Trend
+                  </h2>
+                  <button
+                    onClick={() => setShowChart(false)}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                {/* Range Toggle */}
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setAnalyticsRange('week')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      analyticsRange === 'week'
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Weekly
+                  </button>
+                  <button
+                    onClick={() => setAnalyticsRange('month')}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      analyticsRange === 'month'
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Monthly
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-4 sm:p-6">
+                {(() => {
+                  const days = analyticsRange === 'week' ? 7 : 30;
+                  const data: { date: string; value: number }[] = [];
+                  
+                  // Generate data for the selected range
+                  for (let i = days - 1; i >= 0; i--) {
+                    const date = subDays(new Date(), i);
+                    const dateStr = format(date, 'yyyy-MM-dd');
+                    const dayMeals = mealsByDate[dateStr] || [];
+                    
+                    let value = 0;
+                    if (analyticsMetric === 'calories') {
+                      value = dayMeals.reduce((sum: number, meal: any) => 
+                        sum + (meal.confirmedCalories || meal.aiCalories || 0), 0);
+                    } else if (analyticsMetric === 'protein') {
+                      value = dayMeals.reduce((sum: number, meal: any) => 
+                        sum + (meal.confirmedProtein || meal.aiProtein || 0), 0);
+                    } else if (analyticsMetric === 'carbs') {
+                      value = dayMeals.reduce((sum: number, meal: any) => 
+                        sum + (meal.confirmedCarbohydrates || meal.aiCarbohydrates || 0), 0);
+                    } else if (analyticsMetric === 'fat') {
+                      value = dayMeals.reduce((sum: number, meal: any) => 
+                        sum + (meal.confirmedFat || meal.aiFat || 0), 0);
+                    }
+                    
+                    data.push({
+                      date: format(date, 'MMM d'),
+                      value: analyticsMetric === 'calories' ? Math.round(value) : parseFloat(value.toFixed(1))
+                    });
+                  }
+                  
+                  const actualMaxValue = Math.max(...data.map(d => d.value), 1);
+                  const maxValue = actualMaxValue * 1.15;
+                  const avgValue = data.reduce((sum, d) => sum + d.value, 0) / data.length;
+                  
+                  return (
+                    <>
+                      {/* Stats Summary */}
+                      <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-3 sm:mb-6">
+                        <div className="bg-white rounded-lg p-2 sm:p-3 text-center border border-gray-200">
+                          <p className="text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1">Average</p>
+                          <p className="text-sm sm:text-lg font-bold text-gray-900">
+                            {analyticsMetric === 'calories' ? Math.round(avgValue) : avgValue.toFixed(1)}
+                            {analyticsMetric === 'calories' ? '' : 'g'}
+                          </p>
+                        </div>
+                        <div className="bg-white rounded-lg p-2 sm:p-3 text-center border border-gray-200">
+                          <p className="text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1">Highest</p>
+                          <p className="text-sm sm:text-lg font-bold text-gray-900">
+                            {analyticsMetric === 'calories' ? Math.round(actualMaxValue) : actualMaxValue.toFixed(1)}
+                            {analyticsMetric === 'calories' ? '' : 'g'}
+                          </p>
+                        </div>
+                        <div className="bg-white rounded-lg p-2 sm:p-3 text-center border border-gray-200">
+                          <p className="text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1">Total Days</p>
+                          <p className="text-sm sm:text-lg font-bold text-gray-900">{days}</p>
+                        </div>
+                      </div>
+
+                      {/* Line Chart */}
+                      <div className="relative w-full bg-gray-50 rounded-lg p-2 sm:p-4 overflow-hidden border border-gray-200">
+                        <div className="flex">
+                          {/* Y Axis Labels */}
+                          <div className="flex flex-col justify-between text-[10px] sm:text-xs text-gray-600 font-medium pr-1 sm:pr-2" style={{ height: '200px' }}>
+                            <span>{Math.round(maxValue)}</span>
+                            <span>{Math.round(maxValue * 0.75)}</span>
+                            <span>{Math.round(maxValue * 0.5)}</span>
+                            <span>{Math.round(maxValue * 0.25)}</span>
+                            <span>0</span>
+                          </div>
+
+                          {/* Chart Area */}
+                          <div className="flex-1 relative" style={{ height: '200px' }}>
+                            {/* Grid Lines */}
+                            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                              {[0, 1, 2, 3, 4].map((i) => (
+                                <div key={i} className="border-t border-gray-300 w-full"></div>
+                              ))}
+                            </div>
+
+                            {/* Line and Dots */}
+                            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                              {/* Line Path */}
+                              <path
+                                d={data.map((item, index) => {
+                                  const x = data.length === 1 ? 50 : (index / (data.length - 1)) * 95;
+                                  const y = 100 - ((item.value / maxValue) * 100);
+                                  return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
+                                }).join(' ')}
+                                fill="none"
+                                stroke={
+                                  analyticsMetric === 'calories' ? '#f97316' :
+                                  analyticsMetric === 'protein' ? '#3b82f6' :
+                                  analyticsMetric === 'carbs' ? '#10b981' :
+                                  '#f59e0b'
+                                }
+                                strokeWidth="1.5"
+                                vectorEffect="non-scaling-stroke"
+                                className="transition-all duration-500"
+                              />
+                              
+                              {/* Dots with hover areas */}
+                              {data.map((item, index) => {
+                                const x = data.length === 1 ? 50 : (index / (data.length - 1)) * 95;
+                                const y = 100 - ((item.value / maxValue) * 100);
+                                return (
+                                  <g key={index}>
+                                    {/* Invisible larger circle for easier hovering */}
+                                    <circle
+                                      cx={x}
+                                      cy={y}
+                                      r="3"
+                                      fill="transparent"
+                                      className="cursor-pointer"
+                                      onMouseEnter={() => setHoveredPoint({index, x, y, date: item.date, value: item.value})}
+                                      onMouseLeave={() => setHoveredPoint(null)}
+                                    />
+                                    {/* Visible dot */}
+                                    <circle
+                                      cx={x}
+                                      cy={y}
+                                      r="0.8"
+                                      fill="white"
+                                      stroke={
+                                        analyticsMetric === 'calories' ? '#f97316' :
+                                        analyticsMetric === 'protein' ? '#3b82f6' :
+                                        analyticsMetric === 'carbs' ? '#10b981' :
+                                        '#f59e0b'
+                                      }
+                                      strokeWidth="1.2"
+                                      vectorEffect="non-scaling-stroke"
+                                      className="transition-all duration-500 pointer-events-none"
+                                    />
+                                  </g>
+                                );
+                              })}
+                            </svg>
+
+                            {/* Hover Tooltip */}
+                            {hoveredPoint && (() => {
+                              const showBelow = hoveredPoint.y < 30;
+                              return (
+                                <div
+                                  className="absolute bg-gray-900 text-white px-3 py-2 rounded-lg shadow-xl text-sm font-medium pointer-events-none z-10"
+                                  style={{
+                                    left: `${hoveredPoint.x}%`,
+                                    top: `${hoveredPoint.y}%`,
+                                    transform: showBelow ? 'translate(-50%, 20%)' : 'translate(-50%, -120%)'
+                                  }}
+                                >
+                                  <div className="text-center">
+                                    <div className="text-xs text-gray-300">{hoveredPoint.date}</div>
+                                    <div className="font-bold">
+                                      {hoveredPoint.value}{analyticsMetric === 'calories' ? '' : 'g'}
+                                    </div>
+                                  </div>
+                                  {/* Arrow */}
+                                  {showBelow ? (
+                                    <div 
+                                      className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-full"
+                                      style={{
+                                        width: 0,
+                                        height: 0,
+                                        borderLeft: '6px solid transparent',
+                                        borderRight: '6px solid transparent',
+                                        borderBottom: '6px solid #111827'
+                                      }}
+                                    />
+                                  ) : (
+                                    <div 
+                                      className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full"
+                                      style={{
+                                        width: 0,
+                                        height: 0,
+                                        borderLeft: '6px solid transparent',
+                                        borderRight: '6px solid transparent',
+                                        borderTop: '6px solid #111827'
+                                      }}
+                                    />
+                                  )}
+                                </div>
+                              );
+                            })()}
+                          </div>
+                        </div>
+
+                        {/* X Axis Labels */}
+                        <div className="flex justify-between mt-2 text-[10px] sm:text-xs text-gray-600 font-medium pl-8 sm:pl-10">
+                          {data.filter((_, i) => {
+                            if (analyticsRange === 'week') return true;
+                            return i % 5 === 0 || i === data.length - 1;
+                          }).map((item, i) => (
+                            <span key={i}>{item.date}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>
