@@ -35,13 +35,34 @@ export default function Error({
           We encountered an error while loading this page. Please try again.
         </p>
 
-        {process.env.NODE_ENV === 'development' && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-left">
-            <p className="text-sm text-red-800 font-mono break-all">
-              {error.message}
-            </p>
-          </div>
-        )}
+        {/* Always show error details for debugging */}
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-left max-h-64 overflow-y-auto">
+          <p className="text-xs font-semibold text-red-900 mb-2">Error Details:</p>
+          <p className="text-xs text-red-800 font-mono break-all mb-3">
+            {error.message}
+          </p>
+          {error.stack && (
+            <>
+              <p className="text-xs font-semibold text-red-900 mb-2">Stack Trace:</p>
+              <pre className="text-xs text-red-700 whitespace-pre-wrap break-all">
+                {error.stack}
+              </pre>
+            </>
+          )}
+          <button
+            onClick={() => {
+              const errorText = `Error: ${error.message}\n\nStack: ${error.stack || 'N/A'}\n\nUser Agent: ${navigator.userAgent}\n\nURL: ${window.location.href}`;
+              navigator.clipboard.writeText(errorText).then(() => {
+                alert('Error details copied to clipboard!');
+              }).catch(() => {
+                alert('Failed to copy. Please screenshot this page.');
+              });
+            }}
+            className="mt-3 text-xs bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+          >
+            Copy Error Details
+          </button>
+        </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
