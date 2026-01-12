@@ -53,7 +53,7 @@ export default function RegisterPage() {
             <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
               <Sparkles className="w-7 h-7" />
             </div>
-            <span className="text-3xl font-bold">NutriTrack</span>
+            <span className="text-3xl font-bold">DogamFit</span>
           </div>
           <h1 className="text-4xl font-bold leading-tight">
             Start your healthy journey today
