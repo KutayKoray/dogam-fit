@@ -9,11 +9,6 @@ import { format } from 'date-fns';
 import { Plus, Flame, Beef, Wheat, Droplet, TrendingUp, Clock, Sparkles, LogOut, ChevronDown, ChevronUp, Edit2, Trash2, Save, X, Loader2, User, Menu, Users } from 'lucide-react';
 import Logo from '@/components/Logo';
 
-export const metadata = {
-  title: 'Dashboard - DogamFit',
-  description: 'Track your daily nutrition and fitness goals',
-};
-
 function DashboardPage() {
   const [meals, setMeals] = useState<any[]>([]);
   const [goals, setGoals] = useState<any[]>([]);
