@@ -16,9 +16,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "DogamFit - AI Nutrition Tracker",
   description: "Track your calories and macros with AI-powered food recognition. Stay healthy, stay fit with DogamFit.",
-  icons: {
-    icon: '/favicon.ico',
-  },
 };
 
 export default function RootLayout({
