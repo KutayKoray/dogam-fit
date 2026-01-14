@@ -81,11 +81,11 @@ export default function LoginPage() {
             </p>
           </div>
           
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit} method="post" action="#">
             <div className="space-y-4">
               {/* Email Input */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email-input" className="block text-sm font-medium text-gray-700 mb-2">
                   Email address
                 </label>
                 <div className="relative">
@@ -93,10 +93,10 @@ export default function LoginPage() {
                     <Mail className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    id="email"
+                    id="email-input"
                     name="email"
                     type="email"
-                    autoComplete="email"
+                    autoComplete="username email"
                     required
                     className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                     placeholder="you@example.com"
@@ -108,7 +108,7 @@ export default function LoginPage() {
 
               {/* Password Input */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="password-input" className="block text-sm font-medium text-gray-700 mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -116,7 +116,7 @@ export default function LoginPage() {
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    id="password"
+                    id="password-input"
                     name="password"
                     type="password"
                     autoComplete="current-password"

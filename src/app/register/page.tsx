@@ -104,11 +104,11 @@ export default function RegisterPage() {
             </p>
           </div>
           
-          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+          <form className="mt-8 space-y-5" onSubmit={handleSubmit} method="post" action="#">
             <div className="space-y-4">
               {/* Name Input */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="name-input" className="block text-sm font-medium text-gray-700 mb-2">
                   Name <span className="text-gray-400">(optional)</span>
                 </label>
                 <div className="relative">
@@ -116,9 +116,10 @@ export default function RegisterPage() {
                     <User className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    id="name"
+                    id="name-input"
                     name="name"
                     type="text"
+                    autoComplete="name"
                     className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                     placeholder="Your name"
                     value={name}
@@ -129,7 +130,7 @@ export default function RegisterPage() {
 
               {/* Email Input */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="email-input" className="block text-sm font-medium text-gray-700 mb-2">
                   Email address
                 </label>
                 <div className="relative">
@@ -137,10 +138,10 @@ export default function RegisterPage() {
                     <Mail className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    id="email"
+                    id="email-input"
                     name="email"
                     type="email"
-                    autoComplete="email"
+                    autoComplete="username email"
                     required
                     className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                     placeholder="you@example.com"
@@ -152,7 +153,7 @@ export default function RegisterPage() {
 
               {/* Password Input */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="password-input" className="block text-sm font-medium text-gray-700 mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -160,9 +161,10 @@ export default function RegisterPage() {
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    id="password"
+                    id="password-input"
                     name="password"
                     type="password"
+                    autoComplete="new-password"
                     required
                     className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                     placeholder="Min 6 characters"
@@ -174,7 +176,7 @@ export default function RegisterPage() {
 
               {/* Confirm Password Input */}
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="confirm-password-input" className="block text-sm font-medium text-gray-700 mb-2">
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -182,9 +184,10 @@ export default function RegisterPage() {
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    id="confirmPassword"
+                    id="confirm-password-input"
                     name="confirmPassword"
                     type="password"
+                    autoComplete="new-password"
                     required
                     className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                     placeholder="Confirm your password"
